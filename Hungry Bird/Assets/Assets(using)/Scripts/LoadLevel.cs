@@ -9,7 +9,7 @@ public class LoadLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       Invoke("Load", 2f);
+       Invoke("Load", 4f);
     }
 
     private void Load()
