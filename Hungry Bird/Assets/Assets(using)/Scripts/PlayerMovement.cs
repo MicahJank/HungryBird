@@ -11,11 +11,17 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("In m")] [SerializeField] float xRange = 2f;
     [Tooltip("In m")] [SerializeField] float yRange = 1.2f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    float yThrow, xThrow;
+
+    [SerializeField] float pitchPositionFactor = -5f;
+    [SerializeField] float controlPitchFactor = -20f;
+
+    [SerializeField] float yawPositionFactor = 5f;
+    [SerializeField] float controlYawFactor = 20f;
+
+    [SerializeField] float controlRollFactor = -20f;
+
+
 
     // Update is called once per frame
     void Update()
@@ -25,16 +31,25 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // The ORDER OF ROTATIONS MATTER and object should always rotate on the Y axis first
-    private void RotationCheck()
+    private void RotationCheck() // TODO Smooth the transition from rotating to stop rotating for controler
     {
-        // Rotate the player on the y axis
-        transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+        float pitchByPosition = transform.localPosition.y * pitchPositionFactor;
+        float pitchByControlThrow = yThrow * controlPitchFactor;
+        float pitch = pitchByPosition + pitchByControlThrow;
+
+        float yawByPosition = transform.localPosition.x * yawPositionFactor;
+        float yawByControlThrow = xThrow * controlYawFactor;
+        float yaw = yawByPosition + yawByControlThrow;
+
+        float roll = xThrow * controlRollFactor;
+        
+        transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
     }
 
     private void MovementCheck()
     {
-        float xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-        float yThrow = CrossPlatformInputManager.GetAxis("Vertical");
+        xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
+        yThrow = CrossPlatformInputManager.GetAxis("Vertical");
 
         float yOffset = yThrow * _ySpeed * Time.deltaTime;
         float rawYPos = transform.localPosition.y + yOffset;
