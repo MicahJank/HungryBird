@@ -6,28 +6,35 @@ using UnityStandardAssets.CrossPlatformInput; // import unity standard assets to
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Tooltip("In ms^-1")] [SerializeField] float _xSpeed = 4f;
-    [Tooltip("In ms^-1")] [SerializeField] float _ySpeed = 4f;
-    [Tooltip("In m")] [SerializeField] float xRange = 2f;
-    [Tooltip("In m")] [SerializeField] float yRange = 1.2f;
+    [Header("General")]
+    [Tooltip("In ms^-1")] [SerializeField] float controlSpeed = 4f;
+    [Tooltip("In m")] [SerializeField] float xRange = 1.7f;
+    [Tooltip("In m")] [SerializeField] float yRangeMin = -1.2f;
+    [Tooltip("In m")] [SerializeField] float yRangeMax = 0.7f;
+
+    [Header("Screen-Position Factors")]
+    [SerializeField] float pitchPositionFactor = -5f;
+    [SerializeField] float yawPositionFactor = 5f;
+
+    [Header("Control-Throw Factors")]
+    [SerializeField] float controlYawFactor = 20f;
+    [SerializeField] float controlRollFactor = -20f;
+    [SerializeField] float controlPitchFactor = -20f;
 
     float yThrow, xThrow;
 
-    [SerializeField] float pitchPositionFactor = -5f;
-    [SerializeField] float controlPitchFactor = -20f;
-
-    [SerializeField] float yawPositionFactor = 5f;
-    [SerializeField] float controlYawFactor = 20f;
-
-    [SerializeField] float controlRollFactor = -20f;
-
+   public bool isControlEnabled = true;
 
 
     // Update is called once per frame
     void Update()
     {
-        MovementCheck();
-        RotationCheck();
+        if (isControlEnabled)
+        {
+            MovementCheck();
+            RotationCheck();
+        }
+     
     }
 
     // The ORDER OF ROTATIONS MATTER and object should always rotate on the Y axis first
@@ -42,23 +49,29 @@ public class PlayerMovement : MonoBehaviour
         float yaw = yawByPosition + yawByControlThrow;
 
         float roll = xThrow * controlRollFactor;
-        
+
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
     }
 
     private void MovementCheck()
     {
-        xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-        yThrow = CrossPlatformInputManager.GetAxis("Vertical");
+        xThrow = Input.GetAxis("Horizontal"); //TODO make crossplatform
+        yThrow = Input.GetAxis("Vertical");
 
-        float yOffset = yThrow * _ySpeed * Time.deltaTime;
+        float yOffset = yThrow * controlSpeed * Time.deltaTime;
         float rawYPos = transform.localPosition.y + yOffset;
-        float clampedYPos = Mathf.Clamp(rawYPos, -yRange, yRange);
+        float clampedYPos = Mathf.Clamp(rawYPos, yRangeMin, yRangeMax);
 
-        float xOffset = xThrow * _xSpeed * Time.deltaTime;
+        float xOffset = xThrow * controlSpeed * Time.deltaTime;
         float rawXPos = transform.localPosition.x + xOffset;
         float clampedXPos = Mathf.Clamp(rawXPos, -xRange, xRange); // player will not go off screen
 
         transform.localPosition = new Vector3(clampedXPos, clampedYPos, transform.localPosition.z);
+    }
+
+    public void DisableControls() // called by string reference
+    {
+        Debug.Log("Disable player controls");
+        isControlEnabled = false;
     }
 }
