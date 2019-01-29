@@ -15948,30 +15948,6 @@ PrefabInstance:
       propertyPath: aim
       value: 
       objectReference: {fileID: 5191673598864517793}
-    - target: {fileID: 6588308089027471212, guid: af68f6ffff31ff64c93521a587d234b1,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 811448760}
-    - target: {fileID: 6588308089027471212, guid: af68f6ffff31ff64c93521a587d234b1,
-        type: 3}
-      propertyPath: playerMovement
-      value: 
-      objectReference: {fileID: 811448761}
-    - target: {fileID: 811448761, guid: af68f6ffff31ff64c93521a587d234b1, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5675158159957129385, guid: af68f6ffff31ff64c93521a587d234b1,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5675158159957129385, guid: af68f6ffff31ff64c93521a587d234b1,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af68f6ffff31ff64c93521a587d234b1, type: 3}
 --- !u!1001 &7898155961940170119
