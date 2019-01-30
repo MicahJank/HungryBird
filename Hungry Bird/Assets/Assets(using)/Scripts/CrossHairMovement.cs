@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,16 +15,19 @@ public class CrossHairMovement : MonoBehaviour
     float xRange = 3.5f;
 
 
+
+
     // Update is called once per frame
     void Update()
     {
         if (playerMovement.isControlEnabled)
         {
-            MoveCrossHair();
+            MoveCrossHairXboxBuild();     // Uncomment for Xbox build controls
+            //MoveCrossHairComputerBuild(); // Uncomment for Computer Build Controls
         }
     }
 
-    private void MoveCrossHair()
+    private void MoveCrossHairXboxBuild()
     {
         xAxis = Input.GetAxis("HorizontalRightJS"); //TODO make crossplatform
         yAxis = Input.GetAxis("VerticalRightJS");
